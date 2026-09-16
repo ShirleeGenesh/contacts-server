@@ -39,13 +39,7 @@ export function createResolvers(pool: Pool) {
           `;
           const [rows] = await pool.query(query, [50]);
 
-          return (rows as DbRow[]).map((row) => ({
-            ...row,
-            name: row.name?.trim() || "לא ידוע",
-            email: row.email || "unknown@example.com",
-            phone: row.phone || null,
-            updatedAt: row.updatedAt,
-          }));
+          return (rows as DbRow[]).map((row) => formatContact(row as DbRow));
         } catch (error) {
           // TODO make sure every place we call console.* we call our logger from logger-remote-typescript-package
           console.error("Database error:", error);
